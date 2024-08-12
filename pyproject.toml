@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "aims-io"
+version = "0.1.0"
+description = "Silly aims package to read trajdump files"
+authors = ["pablo unzueta <punzu001@ucr.edu>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+ase = "^3.23.0"
+numpy = "^2.0.1"
+pandas = "^2.2.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
