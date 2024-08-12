@@ -140,6 +140,7 @@ def test_AimsIO():
     path = Path("/Users/pablo/test-aims/0000")
     aims = AimsIO(path)
     assert aims.path is path
+    assert aims.ex_shift == 78.5
 
 
 if __name__ == "__main__":
