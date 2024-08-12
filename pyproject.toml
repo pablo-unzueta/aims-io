@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aims-io"
-version = "0.1.0"
+version = "0.3.1"
 description = "Silly aims package to read trajdump files"
 authors = ["pablo unzueta <punzu001@ucr.edu>"]
 license = "MIT"
