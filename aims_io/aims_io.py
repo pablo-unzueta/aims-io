@@ -141,6 +141,7 @@ def test_AimsIO():
     aims = AimsIO(path)
     assert aims.path is path
     assert aims.ex_shift == 78.5
+    assert aims.atoms_list == ["C", "C", "H", "H", "H", "H"] 
 
 
 if __name__ == "__main__":
