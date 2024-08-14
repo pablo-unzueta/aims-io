@@ -12,7 +12,14 @@ ase = "^3.23.0"
 numpy = "^2.0.1"
 pandas = "^2.2.2"
 
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.6.0"
+mkdocs-material = "^9.5.30"
+markdown-include = "^0.8.1"
+pymdown-extensions = "^10.8.1"
+mkdocstrings = { extras = ["python"], version = "^0.25.2" }
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+

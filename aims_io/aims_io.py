@@ -13,7 +13,30 @@ import os
 
 @dataclass
 class AimsIO:
-    """A class to read in a AIMS output directory and generate a nequip compatible dataset."""
+    """A class to read in a AIMS output directory and generate a nequip compatible dataset.
+
+    Args:
+        path (Path): Path to the AIMS output directory
+        control_dat (str): Name of the control.dat file. Defaults to "Control.dat".
+        fms_out (str): Name of the FMS.out file. Defaults to "FMS.out".
+    Returns:
+        _type_: _description_
+
+    !!! danger
+        This class is not yet implemented.
+
+    !!! note
+        Here's something to know
+
+    !!! warning
+        This is a warning.
+
+    Example:
+        ```python
+        from os import Path
+        aims = AimsIO(Path("path/to/aims/output"))
+        ```
+    """
 
     path: Path
     control_dat: str = "Control.dat"
@@ -141,7 +164,7 @@ def test_AimsIO():
     aims = AimsIO(path)
     assert aims.path is path
     assert aims.ex_shift == 78.5
-    assert aims.atoms_list == ["C", "C", "H", "H", "H", "H"] 
+    assert aims.atoms_list == ["C", "C", "H", "H", "H", "H"]
 
 
 if __name__ == "__main__":
