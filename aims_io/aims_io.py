@@ -98,12 +98,12 @@ class AimsIO:
                 create_csv_from_aims_traj_dump(
                     file, file.with_suffix(file.suffix + ".csv")
                 )
-                filename = file.name + ".extxyz"
                 positions, momenta, states, time = self.read_trajdump(file)
+                filename = file.name + f"state-{states[0]}.extxyz"
                 energy = self.read_energy(file, state=states[0])
                 forces = self.calc_forces(momenta, time)
                 # print(positions.shape, momenta.shape, states.shape, time.shape)
-                self.write_extxyz(self.output_dir /filename, positions, forces, energy, self.atoms_list)
+                self.write_extxyz(self.output_dir / filename, positions, forces, energy, self.atoms_list)
 
     def write_extxyz(self, filename, positions, forces, energy, atoms_list):
         print(f"Writing {filename}")
