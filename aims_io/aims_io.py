@@ -2,13 +2,14 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 from typing import List, Tuple, Optional
-
+import sys
 from ase import Atoms
 from ase.io import write, read
 from ase.calculators.singlepoint import SinglePointCalculator
 from ase import units
 from dataclasses import dataclass, field
 import os
+from utils import create_csv_from_aims_traj_dump
 
 
 @dataclass
@@ -91,13 +92,14 @@ class AimsIO:
 
     def gen_extxyz_for_trajdump_files(self):
         for file in sorted(self.path.glob("TrajDump*")):
-            print(file)
-            filename = str(file) + ".extxyz"
-            positions, momenta, states, time = self.read_trajdump(file)
-            energy = self.read_energy(file, state=states[0])
-            forces = self.calc_forces(momenta, time)
-            # print(positions.shape, momenta.shape, states.shape, time.shape)
-            self.write_extxyz(filename, positions, forces, energy, self.atoms_list)
+            if not file.name.endswith(('csv', 'extxyz')):
+                create_csv_from_aims_traj_dump(file, file.with_suffix(file.suffix + '.csv'))
+                filename = str(file) + ".extxyz"
+                positions, momenta, states, time = self.read_trajdump(file)
+                energy = self.read_energy(file, state=states[0])
+                forces = self.calc_forces(momenta, time)
+                # print(positions.shape, momenta.shape, states.shape, time.shape)
+                self.write_extxyz(filename, positions, forces, energy, self.atoms_list)
 
     def write_extxyz(self, filename, positions, forces, energy, atoms_list):
         for i in range(forces.shape[0]):
@@ -119,10 +121,8 @@ class AimsIO:
             write(self.path / filename, curr_atoms, format="extxyz", append=True)
 
     def read_trajdump(self, file):
-        # remove "#" character inside the file
-        os.system(f"gsed -i 's/\#//' {file}")
-        # os.system(f"sed -i 's/\#//' {file}")
-        traj_dump = pd.read_table(file, sep="\s+", header=0)
+        file = file.with_suffix(file.suffix + '.csv')
+        traj_dump = pd.read_csv(file, header=0)
 
         position_indices = traj_dump.columns.str.contains("pos")
         momentum_indices = traj_dump.columns.str.contains("mom")
@@ -141,9 +141,9 @@ class AimsIO:
         return positions, momenta, states, time
 
     def read_energy(self, file, state):
-        file = "PotEn." + str(file).split(".")[-1]
+        file = self.path / ("PotEn." + str(file).split(".")[-1])
         poten_dump = pd.read_table(file, sep="\s+", header=0)
-        print(poten_dump)
+        # print(poten_dump)
         energies = poten_dump.iloc[:, state].values
 
         return energies - self.ex_shift
@@ -162,6 +162,7 @@ class AimsIO:
 def test_AimsIO():
     path = Path("/Users/pablo/test-aims/0000")
     aims = AimsIO(path)
+    aims.read_trajdump(path / "TrajDump.1")
     assert aims.path is path
     assert aims.ex_shift == 78.5
     assert aims.atoms_list == ["C", "C", "H", "H", "H", "H"]
