@@ -97,7 +97,7 @@ class AimsIO:
         for file in sorted(self.path.glob("TrajDump*")):
             if not file.name.endswith(("csv", "extxyz")):
                 create_csv_from_aims_traj_dump(
-                    file, file.with_suffix(file.suffix + ".csv")
+                    file, self.output_dir / (file.name + ".csv")
                 )
                 positions, momenta, states, time = self.read_trajdump(file)
                 filename = file.name + f"-state-{states[0][0]}.extxyz"
