@@ -40,6 +40,7 @@ class AimsIO:
     """
 
     path: Path
+    output_dir: Path 
     control_dat: str = "Control.dat"
     fms_out: str = "FMS.out"
 
@@ -101,7 +102,7 @@ class AimsIO:
                 energy = self.read_energy(file, state=states[0])
                 forces = self.calc_forces(momenta, time)
                 # print(positions.shape, momenta.shape, states.shape, time.shape)
-                self.write_extxyz(filename, positions, forces, energy, self.atoms_list)
+                self.write_extxyz(self.output_dir /filename, positions, forces, energy, self.atoms_list)
 
     def write_extxyz(self, filename, positions, forces, energy, atoms_list):
         for i in range(forces.shape[0]):
@@ -120,7 +121,7 @@ class AimsIO:
             )
             curr_atoms.calc = calculator
 
-            write(self.path / filename, curr_atoms, format="extxyz", append=True)
+            write(filename, curr_atoms, format="extxyz", append=True)
 
     def read_trajdump(self, file):
         file = file.with_suffix(file.suffix + ".csv")
