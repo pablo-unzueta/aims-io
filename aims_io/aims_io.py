@@ -43,6 +43,7 @@ class AimsIO:
     output_dir: Path 
     control_dat: str = "Control.dat"
     fms_out: str = "FMS.out"
+    units: str = "metal"
 
     ex_shift: float = field(init=False)
     atoms_list: List[str] = field(init=False)
@@ -107,6 +108,15 @@ class AimsIO:
 
     def write_extxyz(self, filename, positions, forces, energy, atoms_list):
         print(f"Writing {filename}")
+
+        if self.units == "metal":
+            # positions are in angstrom
+            # only need to modify energy (eV) and forces (eV/A)
+            energy *= units.Hartree
+            forces *= units.Hartree / units.Bohr
+        else:
+            raise ValueError(f"Units {self.units} not supported")
+
         for i in range(forces.shape[0]):
             curr_atoms = Atoms(
                 # set atomic positions
