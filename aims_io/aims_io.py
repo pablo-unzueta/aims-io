@@ -97,7 +97,7 @@ class AimsIO:
                 create_csv_from_aims_traj_dump(
                     file, file.with_suffix(file.suffix + ".csv")
                 )
-                filename = str(file) + ".extxyz"
+                filename = file.name + ".extxyz"
                 positions, momenta, states, time = self.read_trajdump(file)
                 energy = self.read_energy(file, state=states[0])
                 forces = self.calc_forces(momenta, time)
