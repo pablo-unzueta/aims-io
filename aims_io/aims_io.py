@@ -99,7 +99,7 @@ class AimsIO:
                     file, file.with_suffix(file.suffix + ".csv")
                 )
                 positions, momenta, states, time = self.read_trajdump(file)
-                filename = file.name + f"state-{states[0]}.extxyz"
+                filename = file.name + f"-state-{states[0][0]}.extxyz"
                 energy = self.read_energy(file, state=states[0])
                 forces = self.calc_forces(momenta, time)
                 # print(positions.shape, momenta.shape, states.shape, time.shape)
