@@ -9,7 +9,7 @@ from ase.calculators.singlepoint import SinglePointCalculator
 from ase import units
 from dataclasses import dataclass, field
 import os
-from utils import create_csv_from_aims_traj_dump
+from .utils import create_csv_from_aims_traj_dump
 
 
 @dataclass
@@ -92,8 +92,10 @@ class AimsIO:
 
     def gen_extxyz_for_trajdump_files(self):
         for file in sorted(self.path.glob("TrajDump*")):
-            if not file.name.endswith(('csv', 'extxyz')):
-                create_csv_from_aims_traj_dump(file, file.with_suffix(file.suffix + '.csv'))
+            if not file.name.endswith(("csv", "extxyz")):
+                create_csv_from_aims_traj_dump(
+                    file, file.with_suffix(file.suffix + ".csv")
+                )
                 filename = str(file) + ".extxyz"
                 positions, momenta, states, time = self.read_trajdump(file)
                 energy = self.read_energy(file, state=states[0])
@@ -121,7 +123,7 @@ class AimsIO:
             write(self.path / filename, curr_atoms, format="extxyz", append=True)
 
     def read_trajdump(self, file):
-        file = file.with_suffix(file.suffix + '.csv')
+        file = file.with_suffix(file.suffix + ".csv")
         traj_dump = pd.read_csv(file, header=0)
 
         position_indices = traj_dump.columns.str.contains("pos")
