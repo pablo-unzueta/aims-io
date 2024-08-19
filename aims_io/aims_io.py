@@ -51,6 +51,7 @@ class AimsIO:
     def __post_init__(self):
         self.get_ex_shift()
         self.extract_masses_and_symbols()
+        self.output_dir.mkdir(parents=True, exist_ok=True)
         self.gen_extxyz_for_trajdump_files()
 
     def get_ex_shift(self):
