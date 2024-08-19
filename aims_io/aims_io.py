@@ -105,6 +105,7 @@ class AimsIO:
                 self.write_extxyz(self.output_dir /filename, positions, forces, energy, self.atoms_list)
 
     def write_extxyz(self, filename, positions, forces, energy, atoms_list):
+        print(f"Writing {filename}")
         for i in range(forces.shape[0]):
             curr_atoms = Atoms(
                 # set atomic positions
